@@ -22,16 +22,18 @@ namespace Carflix
             // de la base de datos "Cliente". Si la clave coincide, se pasara al menu de socio. En el caso contrario el programa
             // entra en bucle hasta obtener una clave registrada. (NOTA: da error tras dos claves errones)
 
-            string clave;
+            string usuario, clave;
             SqlDataReader codClave;
             Console.WriteLine("Bienvenido a CarFlix, su Repositorio de Peliculas.");
             do
             {
+                Console.WriteLine("Inserte su nombre de Usuario:");
+                usuario = Console.ReadLine();
                 Console.WriteLine("Interte su clave de socio:");
                 clave = Console.ReadLine();
 
                 conexion.Open();
-                cadena = "SELECT * FROM CLIENTE WHERE Clave LIKE '" + clave + "'";
+                cadena = "SELECT * FROM CLIENTE WHERE Usuario LIKE '"+usuario+"' AND Clave LIKE '"+clave+"'";
                 comando = new SqlCommand(cadena, conexion);
                 codClave = comando.ExecuteReader();
 
@@ -70,38 +72,50 @@ namespace Carflix
         //Con este metodo el cliente podra ver que peliculas del repositorio puede alquilar, segun la edad del cliente y que las 
         // peliculas no esten alquiladas ya.
 
-        public static void VerPeliculas()
-        {
-            //conexion.Open();
-            //cadena = "SELECT FechaNacimiento FROM Clientes WHERE Clave LIKE'" + codClave + "'";
-            //comando = new SqlCommand(cadena, conexion);
-            //comando.ExecuteNonQuery();
-            //conexion.Close();
-            //conexion.Open();
-            //cadena = "SELECTED DATEDIFF (year, Cliente.FechaNacimiento,GETDATE()) AS dateDif";
-            //comando = new SqlCommand(cadena, conexion);
-            //SqlDataReader edad = comando.ExecuteReader();
-            //while (edad.Read())
-            //{
-            //    Console.WriteLine(edad["dateDif"].ToString);
-            //        }
-            //conexion.Close();
-            conexion.Open();
-            cadena = "SELECT * FROM Películas WHERE Estado LIKE 'Disponible' UNION WHERE Clasificación = DATEDIFF (year, Cliente.FechaNacimiento, GETDATE())";
-            comando = new SqlCommand(cadena, conexion);
-            SqlDataReader disponibles = comando.ExecuteReader();
-            //if ()
-            while (disponibles.Read())
-            {
-                Console.WriteLine(disponibles["Título"].ToString() + "\t" + disponibles["Genero"].ToString());
-                Console.WriteLine();
-            }
-            Console.ReadLine();
-            disponibles.Close();
-            conexion.Close();
-            return;
-            //if ()
+        //public static void VerPeliculas()
+        //{
 
+        //    conexion.Open();
+        //    cadena = "SELECTED DATEDIFF (year, Cliente.FechaNacimiento,GETDATE())";
+        //    comando = new SqlCommand(cadena, conexion);
+        //    SqlDataReader edad = comando.ExecuteReader();
+        //    conexion.Close();
+
+
+        //    conexion.Open();
+        //    cadena = "SELECT * FROM Películas WHERE Estado LIKE 'Disponible' AND Clasificación <= '"+edad+"'";
+        //    comando = new SqlCommand(cadena, conexion);
+        //    SqlDataReader disponibles = comando.ExecuteReader();
+            
+        //    while (disponibles.Read())
+        //    {
+        //        Console.WriteLine(disponibles["Título"].ToString() + "\t" + disponibles["Genero"].ToString());
+        //        Console.WriteLine();
+        //    }
+        //    Console.ReadLine();
+        //    disponibles.Close();
+        //    conexion.Close();
+        //    return;
+            
+        //}
+
+        public static void AlquilarPeliculas()
+        {
+            Console.WriteLine("Inserte el titulo de la Película elegida");
+            string título = Console.ReadLine();
+            conexion.Open();
+            cadena = "UPDATE Películas SET Estado = 'Alquilada' WHERE Título LIKE '"+título+"'";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
+
+            conexion.Open();
+            cadena = "INSERT INTO Inventario (DNI, Título, FechaAlquiler, FechaDevolución) VALUES ('Cliente.DNI','" + título + "','" + DateTime.Today.ToString("dd/MM/yyyy") + "','" + DateTime.Today.ToString("dd + 15/MM/yyyy") + "')";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
+            Console.WriteLine("Su habitación ha sido reservada");
+            Console.ReadLine();
 
             return;
         }
@@ -114,26 +128,26 @@ namespace Carflix
             {
                 switch (menuChoice)
                 {
-                    case 1:
-                        VerPeliculas();
+                    //case 1:
+                    //    VerPeliculas();
+                    //    exit = true;
+                    //    break;
+                    case 2:
+                        AlquilarPeliculas();
                         exit = true;
                         break;
-                    //case 2:
-                    //    AlquilarPeliculas();
-                    //    exit = true;
-                    //    break;
-                    //case 3:
-                    //    MisPeliculas();
-                    //    exit = true;
-                    //    break;
-                    //case 4:
-                    //    LogOut();
-                    //    Console.WriteLine("Que tenga usted un buen día");
-                    //    exit = true;
-                    //    break;
-                    //default:
+                        //case 3:
+                        //    MisPeliculas();
+                        //    exit = true;
+                        //    break;
+                        //case 4:
+                        //    LogOut();
+                        //    Console.WriteLine("Que tenga usted un buen día");
+                        //    exit = true;
+                        //    break;
+                        //default:
 
-                    //    break;
+                        //    break;
                 }
             } while (exit == false);
             return;
