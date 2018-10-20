@@ -25,7 +25,24 @@ namespace Carflix
             string usuario, clave;
             bool correctCode = false;
             SqlDataReader codClave;
+            int elec;
+    
             Console.WriteLine("Bienvenido a CarFlix, su Repositorio de Peliculas.");
+
+            do
+            {
+                Console.WriteLine("Eliga la opción deseada");
+                Console.WriteLine("1. Unase a Carfix como nuevo cliente");
+                Console.WriteLine("2. Log In para socios");
+                Console.WriteLine("3. Salir");
+
+                elec = Convert.ToInt32(Console.ReadLine());
+
+            } while (elec <= 0 || elec > 3);
+
+            Logeo(elec);
+            
+
             do
             {
                 Console.WriteLine("Inserte su nombre de Usuario:");
@@ -80,6 +97,46 @@ namespace Carflix
         //Con este metodo el cliente podra ver que peliculas del repositorio puede alquilar, segun la edad del cliente y que las 
         // peliculas no esten alquiladas ya.
 
+
+        public static void Logeo(int menuElec)
+        {
+            bool exit = false;
+            do
+            {
+                switch (menuElec)
+                {
+                    case 1:
+                        Registro();
+                        exit = true;
+                        break;
+                    case 2:
+                        Login();
+                        exit = true;
+                        break;
+                    case 3:
+                        Salir();
+                        Console.WriteLine("Que tenga usted un buen día");
+                        exit = true;
+                        break;
+                }
+            } while (exit == false) ;
+                return;
+        }
+
+        public static void Registro()
+        {
+            Console.WriteLine("Bienvenido a la consola de registro de clientes");
+            Console.WriteLine("Inserte su email:");
+            string email = Console.ReadLine();
+            Console.WriteLine("Inserte su clave");
+            string clave = Console.ReadLine();
+            Console.WriteLine("Inserte usuario");
+            string usuario = Console.ReadLine();
+
+            
+        }
+
+
         public static void VerPeliculas()
         {
 
@@ -133,7 +190,7 @@ namespace Carflix
             conexion.Close();
             Console.WriteLine("Su habitación ha sido reservada");
             Console.ReadLine();
-            Da
+            
             
         }
 

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{95DB060B-E57B-4A77-9FAD-9729AF0804BD}</ProjectGuid>
+    <ProjectGuid>{57FE08E3-5E90-4EA8-8B63-15A39A24BD90}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Carflix</RootNamespace>
-    <AssemblyName>Carflix</AssemblyName>
+    <RootNamespace>Carflix2</RootNamespace>
+    <AssemblyName>Carflix2</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -46,14 +46,12 @@
   <ItemGroup>
     <Compile Include="Cliente.cs" />
     <Compile Include="Inventario.cs" />
-    <Compile Include="Películas.cs" />
+    <Compile Include="Peliculas.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
