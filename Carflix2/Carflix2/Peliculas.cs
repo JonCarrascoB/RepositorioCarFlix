@@ -57,14 +57,14 @@ namespace Carflix2
         {
             this.Genero = Genero;
         }
-        public void SetClasificación(int Clasificación)
+        public void SetClasificación(int Clasificacion)
         {
             this.Clasificacion = Clasificacion;
         }
 
         //************************ METODOS ************************
 
-        public 
+        //public 
 
 
             

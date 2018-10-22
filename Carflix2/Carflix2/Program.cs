@@ -23,12 +23,12 @@ namespace Carflix2
 
             Console.WriteLine("Bienvenido a CarFlix, su Repositorio de Peliculas.");
 
-            int elec;
+            int elec = -1;
 
             do
             {
-                Console.WriteLine("Eliga la opción deseada");
-                Console.WriteLine("1. Unase a Carfix como nuevo cliente");
+                Console.WriteLine("Elija la opción deseada");
+                Console.WriteLine("1. Unase a CarFlix como nuevo cliente");
                 Console.WriteLine("2. Log In para socios");
                 Console.WriteLine("3. Salir");
 
@@ -45,6 +45,7 @@ namespace Carflix2
 
             Logeo(elec);
 
+            Console.ReadLine();
         }
 
         public static void Logeo(int menuElec)
@@ -74,9 +75,41 @@ namespace Carflix2
 
         public static void Registro()
         {
-
+            SqlDataReader emailIn;
             Console.WriteLine("Inserte su correo electronico, por favor");
             string email = Console.ReadLine();
+            conexion.Open();
+            cadena = "SELECT Email FROM Cliente WHERE Email LIKE '" + email + "'";
+            comando = new SqlCommand(cadena, conexion);
+            emailIn = comando.ExecuteReader();
+
+            if (!emailIn.Read())
+            {
+                conexion.Close();
+
+                Console.WriteLine("Inserte su clave de acceso, se requiere una clave de 8 a 10 caracteres con dos numero incluidos");
+                string clave = Console.ReadLine();
+                Console.WriteLine("Inserte su nombre, por favor");
+                string nombre = Console.ReadLine();
+                Console.WriteLine("Inserte sus apellidos, por favor");
+                string apellidos = Console.ReadLine();
+                Console.WriteLine("Inserte fecha de nacimiento, por favor");
+                DateTime fechaNacimiento = Convert.ToDateTime(Console.ReadLine());
+                Console.WriteLine("Inserte su DNI, por favor");
+                string DNI = Console.ReadLine();
+
+                conexion.Open();
+                cadena = "INSERT INTO Clientes (Email, Clave, Nombre, Apellidos, FechaNacimiento, DNI) VALUES ('" + emailIn + "','" + clave + "','" + nombre + "','" + apellidos + "','" +fechaNacimiento+ "','"+DNI+ "')";
+                comando = new SqlCommand(cadena, conexion);
+                comando.ExecuteNonQuery();
+                conexion.Close();
+                Console.WriteLine("Ha sido registrado en CarFlix");
+            }
+            else
+            {
+                Console.WriteLine("El correo electronico ya existe, introduzca otro");
+            }
+
 
         }
 
@@ -92,7 +125,7 @@ namespace Carflix2
                 string clave = Console.ReadLine();
 
                 conexion.Open();
-                cadena = "SELECT * FROM CLIENTE WHERE Email LIKE '" +correo+ "' AND Clave LIKE '" +clave+ "'";
+                cadena = "SELECT * FROM CLIENTE WHERE Email LIKE '" + correo + "' AND Clave LIKE '" + clave + "'";
                 comando = new SqlCommand(cadena, conexion);
                 codClave = comando.ExecuteReader();
 
@@ -102,7 +135,7 @@ namespace Carflix2
                 }
                 else
                 {
-                    Console.WriteLine("Clave erronea.");
+                    Console.WriteLine("Correo electronico y clave erroneos.");
                 }
 
             } while (!correctCode);
@@ -110,7 +143,7 @@ namespace Carflix2
 
             Console.WriteLine("Bienvenido Estimado socio");
 
-            int choice;
+            int choice = -1;
             do
             {
                 Console.WriteLine("Menu de opciones para socios");
@@ -123,7 +156,7 @@ namespace Carflix2
                 {
                     choice = Convert.ToInt32(Console.ReadLine());
                 }
-                catch(FormatException ex)
+                catch (FormatException ex)
                 {
                     Console.WriteLine("No es parametro permitido");
                 }
@@ -160,7 +193,6 @@ namespace Carflix2
                         exit = true;
                         break;
                     case 4:
-                        Return();
                         Console.WriteLine("Que tenga usted un buen día");
                         exit = true;
                         break;
@@ -174,11 +206,75 @@ namespace Carflix2
 
         public static void VerPeliculas()
         {
+            conexion.Open();
+            cadena = "SELECT * FROM Peliculas";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader registros = comando.ExecuteReader();
+            while (registros.Read())
+            {
+                Console.WriteLine(registros["IDPeliculas"].ToString() + "\t" + registros["Titulo"].ToString());
+                Console.WriteLine();
+            }
+            conexion.Close();
+
+            Console.WriteLine("Eliga una Pelicula");
+            int elecPeli = Convert.ToInt32(Console.ReadLine());
+            conexion.Open();
+            cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader pelic = comando.ExecuteReader();
+            while (pelic.Read())
+            {
+                Console.WriteLine(pelic["IDPeliculas"].ToString() + "\t" + pelic["Titulo"].ToString() + "\t"+ pelic["Genero"].ToString()+ "\t" +pelic["Clasificacion"].ToString() + "\t" +pelic["Estado"].ToString());
+                Console.WriteLine();
+            }
+            conexion.Close();
 
         }
 
         public static void AlquilarPeliculas()
         {
+            conexion.Open();
+            cadena = "SELECT DATEDIFF (year,Cliente.FechaNacimiento,GETDATE()) AS Dif FROM Cliente where Email = '"+correo+"'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader edadR = comando.ExecuteReader();
+            int edad = Convert.ToInt32(edadR.Read());
+            conexion.Close();
+
+
+            conexion.Open();
+            cadena = "SELECT * FROM Peliculas WHERE Estado LIKE 'Disponible' AND Clasificacion <= '" + edad + "'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader disponibles = comando.ExecuteReader();
+            while (disponibles.Read())
+            {
+                Console.WriteLine(disponibles["IDPeliculas"].ToString() + "\t" + disponibles["Titulo"].ToString() + "\t" + disponibles["Genero"].ToString() + "\t" + disponibles["Clasificacion"].ToString());
+                Console.WriteLine();
+            }
+            conexion.Close();
+
+            Console.WriteLine("Eliga una Pelicula");
+            int elecPeli = Convert.ToInt32(Console.ReadLine());
+            conexion.Open();
+            cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader pelicR = comando.ExecuteReader();
+            conexion.Close();
+
+            conexion.Open();
+            cadena = "UPDATE Peliculas SET Estado = 'Alquilada' WHERE IDPeliculas LIKE'" + elecPeli + "'";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
+
+            conexion.Open();
+            cadena = "INSERT INTO Inventario (IDPeliculas, FechaAlquiler, FechaDevolución) VALUES ('" + elecPeli + "','" + DateTime.Today + "','" + DateTime.Today+ "')";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
+            Console.WriteLine("El alquiler de la pelicula elegida ha sido registrada");
+            Console.ReadLine();
+
 
         }
 
@@ -186,7 +282,11 @@ namespace Carflix2
         {
 
         }
+        
+        //public static void Return()
+        //{
 
-
+        //}
+       
     }
 }
