@@ -60,10 +60,45 @@ namespace Carflix2
             SqlDataReader alquilados = comando.ExecuteReader();
             while (alquilados.Read())
             {
-                Console.WriteLine(alquilados["IDPeliculas"].ToString() + "\t" + alquilados["FechaAlquiler"].ToString() + "\t" + alquilados["FechaDevolución"].ToString());
-                
+                if (alquilados["FechaDevolución"].ToString() != DateTime.Today.ToString())
+                {
+                    Console.WriteLine(alquilados["IDPeliculas"].ToString() + "\t" + alquilados["FechaAlquiler"].ToString() + "\t" + alquilados["FechaDevolución"].ToString());
+
+                }
+                else if (alquilados["FechaDevolución"].ToString() == DateTime.Today.ToString())
+                {
+                    System.Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine(alquilados["IDPeliculas"].ToString());
+                    System.Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(alquilados["FechaAlquiler"].ToString() + "\t" + alquilados["FechaDevolución"].ToString());
+                }
+
             }
             conexion.Close();
+
+            Console.WriteLine("Eliga el numero de la pelicula a devolver");
+            int elecPeli = Convert.ToInt32(Console.ReadLine());
+            conexion.Open();
+            cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader pelicR = comando.ExecuteReader();
+            conexion.Close();
+
+            conexion.Open();
+            cadena = "UPDATE Peliculas SET Estado = 'Disponible' WHERE IDPeliculas LIKE'" + elecPeli + "'";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
+
+            conexion.Open();
+            cadena = "DELETE From Inventario WHERE IDPeliculas LIKE '"+elecPeli+"'";
+            comando = new SqlCommand(cadena, conexion);
+            comando.ExecuteNonQuery();
+            conexion.Close();
+            Console.WriteLine("La pelicula devuelta ha sido retirada del registro");
+            Console.ReadLine();
+
+            return;
         }
 
     }

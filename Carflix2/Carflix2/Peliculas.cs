@@ -137,7 +137,7 @@ namespace Carflix2
             conexion.Close();
 
             conexion.Open();
-            cadena = "INSERT INTO Inventario (IDPeliculas, FechaAlquiler, FechaDevolución) VALUES ('" + elecPeli + "','" + DateTime.Today + "','" + DateTime.Today.AddDays(20) + "')";
+            cadena = "INSERT INTO Inventario (Email, IDPeliculas, FechaAlquiler, FechaDevolución) VALUES ('" + email + "','" + elecPeli + "','" + DateTime.Today + "','" + DateTime.Today.AddDays(20) + "')";
             comando = new SqlCommand(cadena, conexion);
             comando.ExecuteNonQuery();
             conexion.Close();

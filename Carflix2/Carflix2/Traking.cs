@@ -15,22 +15,28 @@ namespace Carflix2
         static string cadena;
         static SqlCommand comando;
         string em;
-        private string email;
+        //private string email;
 
         public string GetEmail()
         {
-            return email;
+            return em;
         }
-        public void SetEmail(string email)
+        public void SetEmail(string em)
         {
-            this.email = email;
+            this.em = em;
         }
 
         public void Registro()
         {
             SqlDataReader emailIn;
-            Console.WriteLine("Inserte su correo electronico, por favor");
-            string email = Console.ReadLine();
+            string email;
+            do
+            {
+                Console.WriteLine("Inserte su correo electronico, por favor");
+                email = Console.ReadLine();
+
+            } while (!email.Contains("@"));
+            
             conexion.Open();
             cadena = "SELECT Email FROM Cliente WHERE Email LIKE '" + email + "'";
             comando = new SqlCommand(cadena, conexion);
@@ -40,10 +46,31 @@ namespace Carflix2
 
             if (!emailIn.Read())
             {
-            conexion.Close();
+                conexion.Close();
 
-                Console.WriteLine("Inserte su clave de acceso, se requiere una clave de 8 a 10 caracteres con dos numero incluidos");
-                string clave = Console.ReadLine();
+                bool correcto = false;
+                string clave;
+                int  contador = 0;
+                do
+                {
+                    Console.WriteLine("Inserte su clave de acceso, se requiere una clave de 10 caracteres con dos numero incluidos");
+                    clave = Console.ReadLine();
+                    if (clave.Length <= 10)
+                    {
+                        for (int i = 0; i < clave.Length; i++)
+                        {
+                            if (char.IsDigit(clave[i]))
+                            {
+                                contador++;
+                                if (contador >= 2)
+                                {
+                                    correcto = true;
+                                }
+                            }
+                        }
+                    }
+                } while (correcto == false);
+
                 Console.WriteLine("Inserte su nombre, por favor");
                 string nombre = Console.ReadLine();
                 Console.WriteLine("Inserte sus apellidos, por favor");
@@ -88,7 +115,7 @@ namespace Carflix2
                 cadena = "SELECT Email FROM CLIENTE WHERE Email LIKE '" + email + "' AND Clave LIKE '" + clave + "'";
                 comando = new SqlCommand(cadena, conexion);
           
-            SqlDataReader codClave=comando.ExecuteReader();
+                SqlDataReader codClave=comando.ExecuteReader();
 
                 if (codClave.Read())
                 {
