@@ -4,11 +4,21 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Configuration;
+
+
 
 namespace Carflix2
 {
     class Cliente
     {
+        //static String connectionString = ConfigurationManager.ConnectionStrings["conexionCARFLIX"].ConnectionString;
+        //static SqlConnection conexion = new SqlConnection(connectionString);
+        //static string cadena;
+        //static SqlCommand comando;
+
+
+
         private string email;
         private string clave;
         private string nombre;
@@ -58,7 +68,7 @@ namespace Carflix2
         }
 
 
-        public void SetEmail (string email)
+        public void SetEmail(string email)
         {
             this.email = email;
         }
@@ -83,17 +93,63 @@ namespace Carflix2
             this.DNI = DNI;
         }
 
+
+
         //***************** METODOS ***************************
 
-        //public int SeeAge()
+
+
+        //public void Registro()
         //{
+        //    SqlDataReader emailIn;
+        //    Console.WriteLine("Inserte su correo electronico, por favor");
+        //    string email = Console.ReadLine();
+        //    conexion.Open();
+        //    cadena = "SELECT Email FROM Cliente WHERE Email LIKE '" + email + "'";
+        //    comando = new SqlCommand(cadena, conexion);
+        //    emailIn = comando.ExecuteReader();
+
+
+        //    conexion.Close();
+
+        //    if (!emailIn.Read())
+        //    {
+
+        //        Console.WriteLine("Inserte su clave de acceso, se requiere una clave de 8 a 10 caracteres con dos numero incluidos");
+        //        string clave = Console.ReadLine();
+        //        Console.WriteLine("Inserte su nombre, por favor");
+        //        string nombre = Console.ReadLine();
+        //        Console.WriteLine("Inserte sus apellidos, por favor");
+        //        string apellidos = Console.ReadLine();
+        //        Console.WriteLine("Inserte fecha de nacimiento, por favor");
+        //        DateTime fechaNacimiento = Convert.ToDateTime(Console.ReadLine());
+        //        Console.WriteLine("Inserte su DNI, por favor");
+        //        string DNI = Console.ReadLine();
+
+        //        conexion.Open();
+        //        cadena = "INSERT INTO Clientes (Email, Clave, Nombre, Apellidos, FechaNacimiento, DNI) VALUES ('" + emailIn + "','" + clave + "','" + nombre + "','" + apellidos + "','" + fechaNacimiento + "','" + DNI + "')";
+        //        comando = new SqlCommand(cadena, conexion);
+        //        comando.ExecuteNonQuery();
+        //        conexion.Close();
+        //        Console.WriteLine("Ha sido registrado en CarFlix");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("El correo electronico ya existe, introduzca otro");
+        //    }
 
         //}
 
-        //public static void Login()
+
+
+
+        //public void Login()
         //{
         //    SqlDataReader codClave;
         //    bool correctCode = false;
+        //    Peliculas peliculas = new Peliculas();
+        //    Inventario inventario = new Inventario();
+
         //    do
         //    {
         //        Console.WriteLine("Inserte su correo electronico:");
@@ -140,9 +196,40 @@ namespace Carflix2
 
         //    } while (choice <= 0 || choice > 4);
 
-        //    Menu(choice);
+        //    Menu(choice, peliculas, inventario);
 
 
+        //}
+
+        //public void Menu(int menuChoice, Peliculas peliculas, Inventario inventario)
+        //{
+        //    bool exit = false;
+        //    do
+        //    {
+        //        switch (menuChoice)
+        //        {
+        //            case 1:
+        //                peliculas.VerPeliculas();
+        //                exit = true;
+        //                break;
+        //            case 2:
+        //                peliculas.AlquilarPeliculas();
+        //                exit = true;
+        //                break;
+        //            case 3:
+        //                inventario.MisPeliculas();
+        //                exit = true;
+        //                break;
+        //            case 4:
+
+        //                exit = true;
+        //                break;
+        //            default:
+
+        //                break;
+        //        }
+        //    } while (exit == false);
+        //    return;
         //}
     }
 }
