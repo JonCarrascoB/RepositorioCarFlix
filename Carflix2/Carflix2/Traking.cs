@@ -26,24 +26,26 @@ namespace Carflix2
             this.em = em;
         }
 
+
         public void Registro()
         {
-            SqlDataReader emailIn;
+            Cliente cliente = new Cliente();
+            
             string email;
             do
             {
                 Console.WriteLine("Inserte su correo electronico, por favor");
                 email = Console.ReadLine();
 
-            } while (!email.Contains("@"));
+            } while (!email.Contains("@") || !email.Contains("."));
             
             conexion.Open();
             cadena = "SELECT Email FROM Cliente WHERE Email LIKE '" + email + "'";
             comando = new SqlCommand(cadena, conexion);
-            emailIn = comando.ExecuteReader();
+            SqlDataReader emailIn = comando.ExecuteReader();
 
-
-
+            
+ 
             if (!emailIn.Read())
             {
                 conexion.Close();
@@ -85,6 +87,7 @@ namespace Carflix2
                 comando = new SqlCommand(cadena, conexion);
                 comando.ExecuteNonQuery();
                 conexion.Close();
+
                 Console.WriteLine("Ha sido registrado en CarFlix");
             }
             else
@@ -92,7 +95,6 @@ namespace Carflix2
                 Console.WriteLine("El correo electronico ya existe, introduzca otro");
             }
 
-            Menu();
             return;
         }
 
