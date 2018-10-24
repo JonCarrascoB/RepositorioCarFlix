@@ -20,6 +20,7 @@ namespace Carflix2
         private string Titulo;
         private string Genero;
         private int Clasificacion;
+        private string Sinopsis;
 
         public Peliculas()
         {
@@ -51,6 +52,10 @@ namespace Carflix2
         {
             return Clasificacion;
         }
+        public string GetSinopsis()
+        {
+            return Sinopsis;
+        }
 
         public void SetIDPeliculas (int IDPeliculas)
         {
@@ -68,15 +73,27 @@ namespace Carflix2
         {
             this.Clasificacion = Clasificacion;
         }
+        public void SetSinopsis(string Sinopsis)
+        {
+            this.Sinopsis = Sinopsis;
+        }
 
         //************************ METODOS ************************
 
         //public 
 
-        public void VerPeliculas()
+        public void VerPeliculas(string email)
         {
             conexion.Open();
-            cadena = "SELECT * FROM Peliculas";
+            cadena = "SELECT DATEDIFF (year,Cliente.FechaNacimiento,GETDATE()) AS Dif FROM Cliente where Email = '" + email + "'";
+            comando = new SqlCommand(cadena, conexion);
+            SqlDataReader edadR = comando.ExecuteReader();
+            edadR.Read();
+            int edad = Convert.ToInt32(edadR[0].ToString());
+            conexion.Close();
+
+            conexion.Open();
+            cadena = "SELECT * FROM Peliculas WHERE Estado LIKE 'Disponible' AND Clasificacion <= '" + edad + "'";
             comando = new SqlCommand(cadena, conexion);
             SqlDataReader registros = comando.ExecuteReader();
             while (registros.Read())
@@ -94,10 +111,11 @@ namespace Carflix2
             SqlDataReader pelic = comando.ExecuteReader();
             while (pelic.Read())
             {
-                Console.WriteLine(pelic["IDPeliculas"].ToString() + "\t" + pelic["Titulo"].ToString() + "\t" + pelic["Genero"].ToString() + "\t" + pelic["Clasificacion"].ToString() + "\t" + pelic["Estado"].ToString());
+                Console.WriteLine(pelic["IDPeliculas"].ToString() + "\t" + pelic["Titulo"].ToString() + "\t" + pelic["Genero"].ToString() + "\t" + pelic["Clasificacion"].ToString() + "\t" + pelic["Estado"].ToString()+ "\n"+ pelic["Sinopsis"].ToString() +"\n**************************************************");
                 
             }
             conexion.Close();
+
             return;
         }
 
@@ -107,7 +125,8 @@ namespace Carflix2
             cadena = "SELECT DATEDIFF (year,Cliente.FechaNacimiento,GETDATE()) AS Dif FROM Cliente where Email = '" + email + "'";
             comando = new SqlCommand(cadena, conexion);
             SqlDataReader edadR = comando.ExecuteReader();
-            int edad = Convert.ToInt32(edadR.Read());
+            edadR.Read();
+            int edad = Convert.ToInt32(edadR[0].ToString());
             conexion.Close();
 
 

@@ -53,9 +53,9 @@ namespace Carflix2
                 int  contador = 0;
                 do
                 {
-                    Console.WriteLine("Inserte su clave de acceso, se requiere una clave de 10 caracteres con dos numero incluidos");
+                    Console.WriteLine("Inserte su clave de acceso, se requiere una clave de 8 caracteres con dos numeros incluidos");
                     clave = Console.ReadLine();
-                    if (clave.Length <= 10)
+                    if (clave.Length > 7)
                     {
                         for (int i = 0; i < clave.Length; i++)
                         {
@@ -91,17 +91,20 @@ namespace Carflix2
             {
                 Console.WriteLine("El correo electronico ya existe, introduzca otro");
             }
+
+            Menu();
             return;
         }
 
 
-
+        // Aqui se inicia el metodo Login, donde el cliente introducira el correo electronico y su clave, estos los revisara con los
+        // introducidos
 
         public void Login()
         {
             bool correctCode = false;
-            Peliculas peliculas = new Peliculas();
-            Inventario inventario = new Inventario();
+            //Peliculas peliculas = new Peliculas();
+            //Inventario inventario = new Inventario();
             Cliente cliente = new Cliente();
 
             do
@@ -132,6 +135,15 @@ namespace Carflix2
 
             Console.WriteLine("Bienvenido Estimado socio");
 
+            Menu();
+            return;
+        }
+
+        public void Menu()
+        {
+            Peliculas peliculas = new Peliculas();
+            Inventario inventario = new Inventario();
+            Cliente cliente = new Cliente();
             int choice = -1;
             do
             {
@@ -153,7 +165,7 @@ namespace Carflix2
                 switch (choice)
                 {
                     case 1:
-                        peliculas.VerPeliculas();
+                        peliculas.VerPeliculas(GetEmail());
 
                         break;
                     case 2:
@@ -165,21 +177,19 @@ namespace Carflix2
 
                         break;
                     case 4:
-                        
+
+                        ;
                         break;
                     default:
                         Console.WriteLine("opcion no disponible, eliga otra");
-                        
                         break;
-
                 }
+
             } while (choice != 4);
 
             return;
         }
 
 
-        
-        
-     }
- }
+    }
+}

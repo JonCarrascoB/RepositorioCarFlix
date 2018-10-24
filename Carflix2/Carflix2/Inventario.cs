@@ -23,12 +23,6 @@ namespace Carflix2
 
         }
 
-        //public Inventario(DateTime FechaAlquiler, DateTime FechaDevolución)
-        //{
-        //    this.FechaAlquiler = FechaAlquiler;
-        //    this.FechaDevolución = FechaDevolución;
-        //}
-
         //***************** GET y SET *********************************
         public DateTime GetFechaAlquiler()
         {
@@ -48,8 +42,6 @@ namespace Carflix2
         }
 
 
-
-
         //************************ METODOS *****************************
 
         public void MisPeliculas(string Email)
@@ -60,24 +52,27 @@ namespace Carflix2
             SqlDataReader alquilados = comando.ExecuteReader();
             while (alquilados.Read())
             {
-                if (alquilados["FechaDevolución"].ToString() != DateTime.Today.ToString())
+                int dayAlq = alquilados["FechaDevolución"].ToString().CompareTo(DateTime.Today.ToString());
+                if (dayAlq > 0)
                 {
                     Console.WriteLine(alquilados["IDPeliculas"].ToString() + "\t" + alquilados["FechaAlquiler"].ToString() + "\t" + alquilados["FechaDevolución"].ToString());
 
                 }
-                else if (alquilados["FechaDevolución"].ToString() == DateTime.Today.ToString())
+                else if (dayAlq <= 0)
                 {
                     System.Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(alquilados["IDPeliculas"].ToString());
+                    Console.WriteLine(alquilados["IDPeliculas"].ToString() + "\t" + alquilados["FechaAlquiler"].ToString() + "\t" + alquilados["FechaDevolución"].ToString());
                     System.Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(alquilados["FechaAlquiler"].ToString() + "\t" + alquilados["FechaDevolución"].ToString());
                 }
 
             }
             conexion.Close();
 
+            
             Console.WriteLine("Eliga el numero de la pelicula a devolver");
+            
             int elecPeli = Convert.ToInt32(Console.ReadLine());
+            
             conexion.Open();
             cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
             comando = new SqlCommand(cadena, conexion);
