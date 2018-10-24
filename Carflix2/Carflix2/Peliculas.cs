@@ -116,7 +116,39 @@ namespace Carflix2
             }
             conexion.Close();
 
-            return;
+            Console.WriteLine("Quiere alquilar esta pelicula, indique SI o NO");
+            string respuesta = Console.ReadLine();
+            string resp = respuesta.ToUpper();
+            if (resp == "SI")
+            {
+                conexion.Open();
+                cadena = "UPDATE Peliculas SET Estado = 'Alquilada' WHERE IDPeliculas LIKE'" + elecPeli + "'";
+                comando = new SqlCommand(cadena, conexion);
+                comando.ExecuteNonQuery();
+                conexion.Close();
+
+                conexion.Open();
+                cadena = "INSERT INTO Inventario (Email, IDPeliculas, FechaAlquiler, FechaDevolución) VALUES ('" + email + "','" + elecPeli + "','" + DateTime.Today + "','" + DateTime.Today.AddDays(20) + "')";
+                comando = new SqlCommand(cadena, conexion);
+                comando.ExecuteNonQuery();
+                conexion.Close();
+                Console.WriteLine("El alquiler de la pelicula elegida ha sido registrada");
+                Console.ReadLine();
+
+                return;
+            }
+            else if (resp == "NO")
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine("No es un parametro permitido");
+            }
+
+
+
+            //return;
         }
 
         public void AlquilarPeliculas(string email)
