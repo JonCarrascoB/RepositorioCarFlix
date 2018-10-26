@@ -68,31 +68,43 @@ namespace Carflix2
             }
             conexion.Close();
 
-            
-            Console.WriteLine("Eliga el numero de la pelicula a devolver");
-            
-            int elecPeli = Convert.ToInt32(Console.ReadLine());
-            
-            conexion.Open();
-            cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
-            comando = new SqlCommand(cadena, conexion);
-            SqlDataReader pelicR = comando.ExecuteReader();
-            conexion.Close();
+            string resp;
+            do
+            {
+                Console.WriteLine("Quiere devolver alguna pelicula, indique SI o NO");
+                string respuesta = Console.ReadLine();
+                resp = respuesta.ToUpper();
+                if (resp == "SI")
+                {
+                    Console.WriteLine("Eliga el numero de la pelicula a devolver");
 
-            conexion.Open();
-            cadena = "UPDATE Peliculas SET Estado = 'Disponible' WHERE IDPeliculas LIKE'" + elecPeli + "'";
-            comando = new SqlCommand(cadena, conexion);
-            comando.ExecuteNonQuery();
-            conexion.Close();
+                    int elecPeli = Convert.ToInt32(Console.ReadLine());
 
-            conexion.Open();
-            cadena = "DELETE From Inventario WHERE IDPeliculas LIKE '"+elecPeli+"'";
-            comando = new SqlCommand(cadena, conexion);
-            comando.ExecuteNonQuery();
-            conexion.Close();
-            Console.WriteLine("La pelicula devuelta ha sido retirada del registro");
-            Console.ReadLine();
+                    conexion.Open();
+                    cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
+                    comando = new SqlCommand(cadena, conexion);
+                    SqlDataReader pelicR = comando.ExecuteReader();
+                    conexion.Close();
 
+                    conexion.Open();
+                    cadena = "UPDATE Peliculas SET Estado = 'Disponible' WHERE IDPeliculas LIKE'" + elecPeli + "'";
+                    comando = new SqlCommand(cadena, conexion);
+                    comando.ExecuteNonQuery();
+                    conexion.Close();
+
+                    conexion.Open();
+                    cadena = "DELETE From Inventario WHERE IDPeliculas LIKE '" + elecPeli + "'";
+                    comando = new SqlCommand(cadena, conexion);
+                    comando.ExecuteNonQuery();
+                    conexion.Close();
+                    Console.WriteLine("La pelicula devuelta ha sido retirada del registro");
+
+                }
+                else if (resp == "NO")
+                {
+                    return;
+                }
+            } while (resp != "SI" || resp != "NO");
             return;
         }
 

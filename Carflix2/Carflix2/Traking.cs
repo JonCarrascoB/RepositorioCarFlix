@@ -43,9 +43,8 @@ namespace Carflix2
             cadena = "SELECT Email FROM Cliente WHERE Email LIKE '" + email + "'";
             comando = new SqlCommand(cadena, conexion);
             SqlDataReader emailIn = comando.ExecuteReader();
-
             
- 
+
             if (!emailIn.Read())
             {
                 conexion.Close();
@@ -73,6 +72,7 @@ namespace Carflix2
                     }
                 } while (correcto == false);
 
+
                 Console.WriteLine("Inserte su nombre, por favor");
                 string nombre = Console.ReadLine();
                 Console.WriteLine("Inserte sus apellidos, por favor");
@@ -89,11 +89,13 @@ namespace Carflix2
                 conexion.Close();
 
                 Console.WriteLine("Ha sido registrado en CarFlix");
+               
             }
             else
             {
                 Console.WriteLine("El correo electronico ya existe, introduzca otro");
             }
+
 
             return;
         }
