@@ -91,9 +91,9 @@ namespace Carflix2
             edadR.Read();
             int edad = Convert.ToInt32(edadR[0].ToString());
             conexion.Close();
-
+            /*Estado LIKE 'Disponible' AND*/
             conexion.Open();
-            cadena = "SELECT * FROM Peliculas WHERE Estado LIKE 'Disponible' AND Clasificacion <= '" + edad + "'";
+            cadena = "SELECT * FROM Peliculas WHERE Clasificacion <= '" + edad + "'";
             comando = new SqlCommand(cadena, conexion);
             SqlDataReader registros = comando.ExecuteReader();
             while (registros.Read())
@@ -103,8 +103,9 @@ namespace Carflix2
             }
             conexion.Close();
 
-            Console.WriteLine("Eliga una Pelicula");
+            Console.WriteLine("Eliga una Pelicula"); 
             int elecPeli = Convert.ToInt32(Console.ReadLine());
+            
             conexion.Open();
             cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";
             comando = new SqlCommand(cadena, conexion);
@@ -148,7 +149,7 @@ namespace Carflix2
 
 
 
-            //return;
+        return;
         }
 
         public void AlquilarPeliculas(string email)
