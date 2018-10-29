@@ -103,7 +103,7 @@ namespace Carflix2
             }
             conexion.Close();
 
-            Console.WriteLine("Eliga una Pelicula"); 
+            Console.WriteLine("Elija una Pelicula"); 
             int elecPeli = Convert.ToInt32(Console.ReadLine());
             
             conexion.Open();
@@ -174,7 +174,7 @@ namespace Carflix2
             }
             conexion.Close();
 
-            Console.WriteLine("Eliga una Pelicula");
+            Console.WriteLine("Elija una Pelicula");
             int elecPeli = Convert.ToInt32(Console.ReadLine());
             conexion.Open();
             cadena = "SELECT * From Peliculas Where IDPeliculas like '" + elecPeli + "'";

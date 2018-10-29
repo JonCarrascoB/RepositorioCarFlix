@@ -154,7 +154,7 @@ namespace Carflix2
                 Console.WriteLine("Menu de opciones para socios");
                 Console.WriteLine("1. Ver peliculas disponibles");
                 Console.WriteLine("2. Alquilar Pelicula");
-                Console.WriteLine("3. Mis Películas Alquladas");
+                Console.WriteLine("3. Mis Películas Alquiladas");
                 Console.WriteLine("4. Atras");
 
                 try
